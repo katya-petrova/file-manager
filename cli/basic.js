@@ -60,7 +60,7 @@ const renameFile = async (src, dest) => {
 
 const copy = async (src, dest) => {
   if (!(await exists(src)) || !(await exists(dest))) {
-    console.error('Incorrect path');
+    throw new Error('Incorrect path');
   } else {
     const readable = fs.createReadStream(src, { encoding: 'utf8' });
     const writable = fs.createWriteStream(`${dest}/${src}`);

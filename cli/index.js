@@ -5,6 +5,7 @@ import { getFileDir } from './utils/getFileDirectory.js';
 import { showOSInfo } from './os.js';
 import { calculateHash } from './hash.js';
 import { basicOperations } from './basic.js';
+import { compressDecompress } from './compress.js';
 
 const rl = readline.createInterface(process.stdin, process.stdout);
 
@@ -17,7 +18,7 @@ const { __dirname, __filename } = getFileDir(import.meta.url);
 
 rl.write(welcomeMsg);
 
-rl.write(__dirname);
+// rl.write(__dirname);
 
 rl.on('line', (input) => {
   const parsedInput = parseArgs(input);
@@ -39,6 +40,9 @@ rl.on('line', (input) => {
       break;
     case 'navigation':
       console.log('NAVIGATION');
+      break;
+    case 'compress':
+      compressDecompress(parsedInput[1]);
       break;
     default:
       console.error(`Is not a valid command!`);
