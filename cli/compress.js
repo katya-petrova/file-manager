@@ -30,27 +30,11 @@ export async function compressDecompress(input) {
   }
 
   async function decompress() {
-    // if (!!(await exists(dest))) {
     const readStream = fs.createReadStream(src);
     const writeStream = fs.createWriteStream(`${dest}/decompressed.txt`);
     const stream = readStream.pipe(decompressedData).pipe(writeStream);
     stream.on('finish', () => {
       console.log('Decompressing is done');
     });
-    // } else {
-    //   console.log('\x1b[31m%s\x1b[0m', 'No such file or directory');
-    // }
-
-    //decompress cli/a.gz cli/
-
-    // console.log(`${dest}`);
-    // const writeStream = fs.createWriteStream(`${dest}/decompressed.txt`);
-
-    // readStream
-    //   .pipe(decompressedData)
-    //   .pipe(writeStream)
-    //   .on('finish', () => {
-    //     console.log('Done decompressing 😎');
-    //   });
   }
 }
