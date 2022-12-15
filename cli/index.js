@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import os from 'os';
+import path from 'path';
 import readline from 'readline';
 import { parseArgs } from './parseArguments.js';
 import { getFileDir } from './utils/getFileDirectory.js';
@@ -6,6 +8,7 @@ import { showOSInfo } from './os.js';
 import { calculateHash } from './hash.js';
 import { basicOperations } from './basic.js';
 import { compressDecompress } from './compress.js';
+import { navigation, currentDirectory } from './navigation.js';
 
 const rl = readline.createInterface(process.stdin, process.stdout);
 
@@ -16,13 +19,20 @@ const welcomeMsg = `Welcome to the File Manager, ${username}! \n`;
 const goodbyeMsg = `Thank you for using File Manager, ${username}, goodbye!`;
 const { __dirname, __filename } = getFileDir(import.meta.url);
 
+// let currentDirectory = os.homedir();
+
+// function goUp() {
+//   currentDirectory = path.join(currentDirectory, '..');
+// }
+
+// function cd(path)
+
 rl.write(welcomeMsg);
 
-// rl.write(__dirname);
+console.log(`\nYou're currently in ${currentDirectory}\n`);
 
 rl.on('line', (input) => {
   const parsedInput = parseArgs(input);
-  //   console.log('parsedInput', parsedInput);
 
   if (input === '.exit') {
     exitProcess();
@@ -39,7 +49,7 @@ rl.on('line', (input) => {
       basicOperations(parsedInput[1]);
       break;
     case 'navigation':
-      console.log('NAVIGATION');
+      navigation(parsedInput[1]);
       break;
     case 'compress':
       compressDecompress(parsedInput[1]);
@@ -48,6 +58,8 @@ rl.on('line', (input) => {
       console.error(`Is not a valid command!`);
       break;
   }
+
+  console.log(`\nYou're currently in ${currentDirectory}\n`);
 });
 
 rl.on('SIGINT', function () {
