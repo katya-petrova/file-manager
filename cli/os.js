@@ -43,11 +43,3 @@ function getUsername() {
 function getArchitecture() {
   return console.log(os.arch());
 }
-
-// os --cpus
-// Get home directory and print it to console
-// os --homedir
-// Get current system user name (Do not confuse with the username that is set when the application starts) and print it to console
-// os --username
-// Get CPU architecture for which Node.js binary has compiled and print it to console
-// os --architecture

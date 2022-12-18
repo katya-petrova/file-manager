@@ -27,7 +27,7 @@ function goUp() {
 }
 
 async function cd(dest) {
-  if (checkPath(dest)) {
+  if (await checkPath(dest)) {
     currentDirectory = path.resolve(currentDirectory, dest);
   }
 }
@@ -41,7 +41,7 @@ async function checkPath(dest) {
   ) {
     return true;
   } else {
-    console.log('\x1b[31m%s\x1b[0m', 'No such file or directory');
+    console.log('\x1b[31m%s\x1b[0m', 'Operation failed\n');
     return;
   }
 }

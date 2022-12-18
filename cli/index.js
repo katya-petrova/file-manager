@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-import os from 'os';
-import path from 'path';
 import readline from 'readline';
 import { parseArgs } from './parseArguments.js';
 import { getFileDir } from './utils/getFileDirectory.js';
@@ -14,18 +12,10 @@ const rl = readline.createInterface(process.stdin, process.stdout);
 
 const args = process.argv.slice(2);
 const initArgs = args.join().split('=');
-const username = initArgs[1];
+const username = initArgs[1] || 'Anonimus';
 const welcomeMsg = `Welcome to the File Manager, ${username}! \n`;
 const goodbyeMsg = `Thank you for using File Manager, ${username}, goodbye!`;
 const { __dirname, __filename } = getFileDir(import.meta.url);
-
-// let currentDirectory = os.homedir();
-
-// function goUp() {
-//   currentDirectory = path.join(currentDirectory, '..');
-// }
-
-// function cd(path)
 
 rl.write(welcomeMsg);
 
@@ -55,7 +45,7 @@ rl.on('line', (input) => {
       compressDecompress(parsedInput[1]);
       break;
     default:
-      console.error(`Is not a valid command!`);
+      console.error('\x1b[31m%s\x1b[0m', `Invalid input!`);
       break;
   }
 
