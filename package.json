@@ -1,0 +1,21 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "cli/index.js",
+  "scripts": {
+    "start": "node cli/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/katya-petrova/file-manager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/katya-petrova/file-manager/issues"
+  },
+  "homepage": "https://github.com/katya-petrova/file-manager#readme"
+}
