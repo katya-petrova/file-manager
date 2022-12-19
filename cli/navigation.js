@@ -1,5 +1,5 @@
 import os from 'os';
-import fs, { access } from 'fs';
+import fs from 'fs';
 import path from 'path';
 import { exists } from './utils/getFileDirectory.js';
 
@@ -20,18 +20,6 @@ export async function navigation(input) {
   }
 }
 
-export let currentDirectory = os.homedir();
-
-function goUp() {
-  currentDirectory = path.join(currentDirectory, '..');
-}
-
-async function cd(dest) {
-  if (await checkPath(dest)) {
-    currentDirectory = path.resolve(currentDirectory, dest);
-  }
-}
-
 async function checkPath(dest) {
   if (path.isAbsolute(dest) && (await exists(dest))) {
     return true;
@@ -41,8 +29,21 @@ async function checkPath(dest) {
   ) {
     return true;
   } else {
-    console.log('\x1b[31m%s\x1b[0m', 'Operation failed\n');
+    console.log('\x1b[31m%s\x1b[0m', 'No such file or directory');
+
     return;
+  }
+}
+
+export let currentDirectory = os.homedir();
+
+function goUp() {
+  currentDirectory = path.join(currentDirectory, '..');
+}
+
+async function cd(dest) {
+  if (await checkPath(dest)) {
+    currentDirectory = path.resolve(currentDirectory, dest);
   }
 }
 

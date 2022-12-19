@@ -1,16 +1,14 @@
 import fs from 'fs';
 import zlib from 'zlib';
+import path from 'path';
 import { exists } from './utils/getFileDirectory.js';
-
-//TODO: validation for inputs
-
-const compressedData = zlib.createBrotliCompress();
-const decompressedData = zlib.createBrotliDecompress();
+import { currentDirectory } from './navigation.js';
 
 export async function compressDecompress(input) {
-  const src = input[1];
-  const dest = input[2];
-  const getFileExtansion = src.split('.')[0];
+  const src = path.resolve(currentDirectory, input[1]);
+  const dest = path.resolve(currentDirectory, input[2]);
+  const pathArr = src.split(path.sep);
+  const fileName = pathArr[pathArr.length - 1].split('.');
 
   if (!(await exists(src)) || !(await exists(dest))) {
     console.log('\x1b[31m%s\x1b[0m', 'No such file or directory');
@@ -21,20 +19,30 @@ export async function compressDecompress(input) {
   }
 
   function compress() {
-    const readStream = fs.createReadStream(src, { encoding: 'utf8' });
-    const writeStream = fs.createWriteStream(`${dest}/${getFileExtansion}.br`);
-    const stream = readStream.pipe(compressedData).pipe(writeStream);
-    stream.on('finish', () => {
-      console.log('Compressing is done');
-    });
+    const readable = fs.createReadStream(src);
+    const writableGz = fs.createWriteStream(
+      `${dest}/${fileName[0]}.${fileName[1]}.br`
+    );
+    const gZip = zlib.createBrotliCompress();
+    readable
+      .pipe(gZip)
+      .pipe(writableGz)
+      .on('finish', function () {
+        console.log('Compressing is done');
+      });
   }
 
-  async function decompress() {
-    const readStream = fs.createReadStream(src);
-    const writeStream = fs.createWriteStream(`${dest}/decompressed.txt`);
-    const stream = readStream.pipe(decompressedData).pipe(writeStream);
-    stream.on('finish', () => {
-      console.log('Decompressing is done');
-    });
+  function decompress() {
+    const readable = fs.createReadStream(src);
+    const writableGz = fs.createWriteStream(
+      `${dest}/${fileName[0]}.${fileName[1]}`
+    );
+    const gUnZip = zlib.createBrotliDecompress();
+    readable
+      .pipe(gUnZip)
+      .pipe(writableGz)
+      .on('finish', function () {
+        console.log('Decompressing is done');
+      });
   }
 }

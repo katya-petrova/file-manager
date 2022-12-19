@@ -1,10 +1,12 @@
 import fs from 'fs';
+import path from 'path';
+import { currentDirectory } from './navigation.js';
 import { createHash } from 'crypto';
 
 export const calculateHash = async (input) => {
-  const path = input[1];
+  const filePath = path.resolve(currentDirectory, input[1]);
   try {
-    fs.readFile(path, 'utf8', (err, data) => {
+    fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
         console.error(err);
         return;
